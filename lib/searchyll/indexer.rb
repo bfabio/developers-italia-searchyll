@@ -35,7 +35,7 @@ module Searchyll
       self.working       = true
       self.timestamp     = Time.now
       self.batch_size    = BATCH_SIZE
-      
+
       # Compute a regex for detecting paths to ignore
       escaped = (configuration.elasticsearch_ignore.map {|i| Regexp.escape(i).gsub('\*','.+?')}).join('|')
       self.ignore_regex = Regexp.new "^(#{escaped})$", Regexp::IGNORECASE
@@ -44,7 +44,7 @@ module Searchyll
     # Public: Add new documents for batch indexing.
     def <<(doc)
       if doc['url'] =~ self.ignore_regex
-        #puts %(        ...ignoring)
+        Jekyll.logger.debug "        ...ignoring"
       else
         queue << doc
       end
